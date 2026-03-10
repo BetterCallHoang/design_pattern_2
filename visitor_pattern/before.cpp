@@ -24,8 +24,8 @@ Polygon
 
 class Shape {
 public:
-    virtual double area() = 0;
-    virtual void draw() = 0;
+    virtual double Area() = 0;
+    virtual void Draw() = 0;
     virtual ~Shape() = default;
 };
 
@@ -36,11 +36,11 @@ private:
 public:
     Circle(double r) : radius(r) {}
 
-    double area() override {
+    double Area() override {
         return 3.14159 * radius * radius;
     }
 
-    void draw() override {
+    void Draw() override {
         std::cout << "Drawing circle radius=" << radius << std::endl;
     }
 };
@@ -53,11 +53,11 @@ private:
 public:
     Rectangle(double w, double h) : width(w), height(h) {}
 
-    double area() override {
+    double Area() override {
         return width * height;
     }
 
-    void draw() override {
+    void Draw() override {
         std::cout << "Drawing rectangle " << width << "x" << height << std::endl;
     }
 };
@@ -69,8 +69,8 @@ int main() {
     shapes.push_back(std::make_unique<Rectangle>(4, 6));
 
     for (auto& s : shapes)
-        std::cout << "Area: " << s->area() << std::endl;
+        std::cout << "Area: " << s->Area() << std::endl;
 
     for (auto& s : shapes)
-        s->draw();
+        s->Draw();
 }

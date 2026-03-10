@@ -8,15 +8,15 @@ class Rectangle;
 // Visitor interface
 class ShapeVisitor {
 public:
-    virtual void visit(Circle& circle) = 0;
-    virtual void visit(Rectangle& rect) = 0;
+    virtual void Visit(Circle& circle) = 0;
+    virtual void Visit(Rectangle& rect) = 0;
     virtual ~ShapeVisitor() = default;
 };
 
 // Element interface
 class Shape {
 public:
-    virtual void accept(ShapeVisitor& visitor) = 0;
+    virtual void Accept(ShapeVisitor& Visitor) = 0;
     virtual ~Shape() = default;
 };
 
@@ -28,8 +28,8 @@ public:
 
     Circle(double r) : radius(r) {}
 
-    void accept(ShapeVisitor& visitor) override {
-        visitor.visit(*this);
+    void Accept(ShapeVisitor& Visitor) override {
+        Visitor.Visit(*this);
     }
 };
 
@@ -40,8 +40,8 @@ public:
 
     Rectangle(double w, double h) : width(w), height(h) {}
 
-    void accept(ShapeVisitor& visitor) override {
-        visitor.visit(*this);
+    void Accept(ShapeVisitor& Visitor) override {
+        Visitor.Visit(*this);
     }
 };
 
@@ -50,12 +50,12 @@ public:
 // Visitor tính diện tích
 class AreaVisitor : public ShapeVisitor {
 public:
-    void visit(Circle& circle) override {
+    void Visit(Circle& circle) override {
         double area = 3.14159 * circle.radius * circle.radius;
         std::cout << "Circle area: " << area << std::endl;
     }
 
-    void visit(Rectangle& rect) override {
+    void Visit(Rectangle& rect) override {
         double area = rect.width * rect.height;
         std::cout << "Rectangle area: " << area << std::endl;
     }
@@ -64,11 +64,11 @@ public:
 // Visitor vẽ shape
 class DrawVisitor : public ShapeVisitor {
 public:
-    void visit(Circle& circle) override {
+    void Visit(Circle& circle) override {
         std::cout << "Drawing circle radius=" << circle.radius << std::endl;
     }
 
-    void visit(Rectangle& rect) override {
+    void Visit(Rectangle& rect) override {
         std::cout << "Drawing rectangle " 
                   << rect.width << "x" << rect.height << std::endl;
     }
@@ -82,16 +82,16 @@ int main() {
     shapes.push_back(std::make_unique<Circle>(5));
     shapes.push_back(std::make_unique<Rectangle>(4, 6));
 
-    AreaVisitor areaVisitor;
-    DrawVisitor drawVisitor;
+    AreaVisitor area_visitor;
+    DrawVisitor draw_visitor;
 
     std::cout << "Compute area\n";
     for (auto& s : shapes)
-        s->accept(areaVisitor);
+        s->Accept(area_visitor);
 
     std::cout << "\nDraw shapes\n";
     for (auto& s : shapes)
-        s->accept(drawVisitor);
+        s->Accept(draw_visitor);
 
     return 0;
 }

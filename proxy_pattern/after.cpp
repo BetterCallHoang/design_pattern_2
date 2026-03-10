@@ -17,8 +17,8 @@ class ISarProduct {
 public:
     virtual ~ISarProduct() = default;
 
-    virtual void showMetadata() = 0;
-    virtual void getPixel(int x, int y) = 0;
+    virtual void ShowMetadata() = 0;
+    virtual void GetPixel(int x, int y) = 0;
 };
 
 // ===============================
@@ -29,7 +29,7 @@ class SarProduct : public ISarProduct {
 private:
     std::string filename;
 
-    void loadDataFromDisk() {
+    void LoadDataFromDisk() {
         std::cout << "Đang tải toàn bộ dữ liệu ảnh SAR từ đĩa...\n";
         std::cout << "Dữ liệu lớn đã được load vào RAM.\n";
     }
@@ -38,14 +38,14 @@ public:
     SarProduct(const std::string& file)
         : filename(file)
     {
-        loadDataFromDisk();  // Chỉ load khi được tạo
+        LoadDataFromDisk();  // Chỉ load khi được tạo
     }
 
-    void showMetadata() override {
+    void ShowMetadata() override {
         std::cout << "Metadata của file: " << filename << "\n";
     }
 
-    void getPixel(int x, int y) override {
+    void GetPixel(int x, int y) override {
         std::cout << "Truy cập pixel tại (" << x << ", " << y << ")\n";
     }
 };
@@ -59,13 +59,13 @@ private:
     std::string filename;
 
     // Ban đầu chưa có object thật
-    std::unique_ptr<SarProduct> realProduct;
+    std::unique_ptr<SarProduct> real_product;
 
     // Chỉ load khi cần
-    void ensureLoaded() {
-        if (!realProduct) {
+    void EnsureLoaded() {
+        if (!real_product) {
             std::cout << "[Proxy] Chưa load dữ liệu. Tiến hành load...\n";
-            realProduct = std::make_unique<SarProduct>(filename);
+            real_product = std::make_unique<SarProduct>(filename);
         }
     }
 
@@ -76,16 +76,16 @@ public:
         // Không load dữ liệu ở đây
     }
 
-    void showMetadata() override {
+    void ShowMetadata() override {
         // Metadata có thể đọc nhẹ, không cần load toàn bộ
         std::cout << "Metadata (đọc nhanh) của file: "
                   << filename << "\n";
     }
 
-    void getPixel(int x, int y) override {
+    void GetPixel(int x, int y) override {
         // Chỉ load khi thực sự cần pixel
-        ensureLoaded();
-        realProduct->getPixel(x, y);
+        EnsureLoaded();
+        real_product->GetPixel(x, y);
     }
 };
 
@@ -98,10 +98,10 @@ int main() {
         std::make_unique<SarProductProxy>("sentinel1.dat");
 
     std::cout << "Chỉ xem metadata:\n";
-    product->showMetadata();  // Không load dữ liệu
+    product->ShowMetadata();  // Không load dữ liệu
 
     std::cout << "\nTruy cập pixel:\n";
-    product->getPixel(100, 200);  // Lúc này mới load
+    product->GetPixel(100, 200);  // Lúc này mới load
 
     return 0;
 }

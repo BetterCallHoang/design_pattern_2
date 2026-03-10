@@ -4,21 +4,21 @@
 
 class Band {
 public:
-    void print() const {
+    void Print() const {
         std::cout << "Band\n";
     }
 };
 
 class TiePointGrid {
 public:
-    void print() const {
+    void Print() const {
         std::cout << "TiePointGrid\n";
     }
 };
 
 class Metadata {
 public:
-    void print() const {
+    void Print() const {
         std::cout << "Metadata\n";
     }
 };
@@ -30,40 +30,40 @@ private:
     std::vector<Metadata> metadata;
 
 public:
-    void addBand(const Band& b) {
+    void AddBand(const Band& b) {
         bands.push_back(b);
     }
 
-    void addGrid(const TiePointGrid& g) {
+    void AddGrid(const TiePointGrid& g) {
         grids.push_back(g);
     }
 
-    void addMetadata(const Metadata& m) {
+    void AddMetadata(const Metadata& m) {
         metadata.push_back(m);
     }
 
-    void print() {
+    void Print() {
         std::cout << "Product:\n";
 
         for (auto& b : bands)
-            b.print();
+            b.Print();
 
         for (auto& g : grids)
-            g.print();
+            g.Print();
 
         for (auto& m : metadata)
-            m.print();
+            m.Print();
     }
 };
 
 int main() {
     Product p;
 
-    p.addBand(Band());
-    p.addGrid(TiePointGrid());
-    p.addMetadata(Metadata());
+    p.AddBand(Band());
+    p.AddGrid(TiePointGrid());
+    p.AddMetadata(Metadata());
 
-    p.print();
+    p.Print();
 }
 /* Vấn đề 
 1.  Product phải biết hết các node --> Muốn thêm các node phải chỉnh sửa Product

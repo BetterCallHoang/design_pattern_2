@@ -14,7 +14,7 @@ class SarProduct {
 private:
     std::string filename;
 
-    void loadDataFromDisk() {
+    void LoadDataFromDisk() {
         std::cout << "Đang tải toàn bộ dữ liệu ảnh SAR từ đĩa...\n";
         std::cout << "Dữ liệu lớn đã được load vào RAM.\n";
     }
@@ -24,10 +24,10 @@ public:
     SarProduct(const std::string& file)
         : filename(file)
     {
-        loadDataFromDisk();  // Luôn load dù chưa cần
+        LoadDataFromDisk();  // Luôn load dù chưa cần
     }
 
-    void showMetadata() {
+    void ShowMetadata() {
         std::cout << "Metadata của file: " << filename << "\n";
     }
 
@@ -41,7 +41,7 @@ int main() {
     SarProduct product("sentinel1.dat");
 
     std::cout << "Chỉ xem metadata:\n";
-    product.showMetadata();
+    product.ShowMetadata();
 
     return 0;
 }

@@ -14,21 +14,21 @@
 
 class ImageView {
 public:
-    void refresh() {
+    void Refesh() {
         std::cout << "ImageView: Cập nhật hiển thị ảnh\n";
     }
 };
 
 class ProgressBar {
 public:
-    void update(int percent) {
+    void Update(int percent) {
         std::cout << "ProgressBar: " << percent << "% hoàn thành\n";
     }
 };
 
 class LogSystem {
 public:
-    void write(const std::string& msg) {
+    void Write(const std::string& msg) {
         std::cout << "Log: " << msg << "\n";
     }
 };
@@ -36,23 +36,23 @@ public:
 // Engine xử lý ảnh SAR
 class ProcessingEngine {
 private:
-    ImageView* imageView;
-    ProgressBar* progressBar;
-    LogSystem* logSystem;
+    ImageView* image_view;
+    ProgressBar* progress_bar;
+    LogSystem* log_system;
 
 public:
     ProcessingEngine(ImageView* iv,
                      ProgressBar* pb,
                      LogSystem* log)
-        : imageView(iv), progressBar(pb), logSystem(log) {}
+        : image_view(iv), progress_bar(pb), log_system(log) {}
 
     void processTile(int percent) {
         std::cout << "Đang xử lý tile...\n";
 
         // ❌ Gọi trực tiếp từng thành phần
-        imageView->refresh();
-        progressBar->update(percent);
-        logSystem->write("Đã xử lý xong một tile");
+        image_view->Refesh();
+        progress_bar->Update(percent);
+        log_system->Write("Đã xử lý xong một tile");
     }
 };
 

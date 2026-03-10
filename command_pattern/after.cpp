@@ -2,13 +2,13 @@
 
 - Mỗi thao tác là một Command
 
-- Command có execute() và undo()
+- Command có Execute() và Undo()
 
 - Editor quản lý:
 
-  + undoStack
+  + UndoStack
 
-  + redoStack
+  + RedoStack
 */
 
 #include <iostream>
@@ -22,35 +22,35 @@
 class ImageViewport {
 private:
     double scale = 1.0;
-    double rotationAngle = 0.0;
+    double rotation_angle = 0.0;
 
 public:
-    void zoom(double factor) {
+    void Zoom(double factor) {
         scale *= factor;
         std::cout << "Zoom: scale = " << scale << "\n";
     }
 
-    void setScale(double newScale) {
+    void SetScale(double newScale) {
         scale = newScale;
         std::cout << "Set scale = " << scale << "\n";
     }
 
-    double getScale() const {
+    double GetScale() const {
         return scale;
     }
 
-    void rotate(double angle) {
-        rotationAngle += angle;
-        std::cout << "Rotate: angle = " << rotationAngle << "\n";
+    void Rotate(double angle) {
+        rotation_angle += angle;
+        std::cout << "Rotate: angle = " << rotation_angle << "\n";
     }
 
-    void setRotation(double angle) {
-        rotationAngle = angle;
-        std::cout << "Set rotation = " << rotationAngle << "\n";
+    void SetRotation(double angle) {
+        rotation_angle = angle;
+        std::cout << "Set rotation = " << rotation_angle << "\n";
     }
 
-    double getRotation() const {
-        return rotationAngle;
+    double GetRotation() const {
+        return rotation_angle;
     }
 };
 
@@ -61,8 +61,8 @@ public:
 class Command {
 public:
     virtual ~Command() = default;
-    virtual void execute() = 0;
-    virtual void undo() = 0;
+    virtual void Execute() = 0;
+    virtual void Undo() = 0;
 };
 
 // ===============================
@@ -73,19 +73,19 @@ class ZoomCommand : public Command {
 private:
     ImageViewport& viewport;
     double factor;
-    double previousScale;  // Lưu trạng thái trước
+    double previous_scale;  // Lưu trạng thái trước
 
 public:
     ZoomCommand(ImageViewport& vp, double f)
         : viewport(vp), factor(f) {}
 
-    void execute() override {
-        previousScale = viewport.getScale();
-        viewport.zoom(factor);
+    void Execute() override {
+        previous_scale = viewport.GetScale();
+        viewport.Zoom(factor);
     }
 
-    void undo() override {
-        viewport.setScale(previousScale);
+    void Undo() override {
+        viewport.SetScale(previous_scale);
     }
 };
 
@@ -97,19 +97,19 @@ class RotateCommand : public Command {
 private:
     ImageViewport& viewport;
     double angle;
-    double previousAngle;
+    double previous_angle;
 
 public:
     RotateCommand(ImageViewport& vp, double a)
         : viewport(vp), angle(a) {}
 
-    void execute() override {
-        previousAngle = viewport.getRotation();
-        viewport.rotate(angle);
+    void Execute() override {
+        previous_angle = viewport.GetRotation();
+        viewport.Rotate(angle);
     }
 
-    void undo() override {
-        viewport.setRotation(previousAngle);
+    void Undo() override {
+        viewport.SetRotation(previous_angle);
     }
 };
 
@@ -119,38 +119,38 @@ public:
 
 class Editor {
 private:
-    std::stack<std::shared_ptr<Command>> undoStack;
-    std::stack<std::shared_ptr<Command>> redoStack;
+    std::stack<std::shared_ptr<Command>> UndoStack;
+    std::stack<std::shared_ptr<Command>> RedoStack;
 
 public:
-    void executeCommand(std::shared_ptr<Command> cmd) {
-        cmd->execute();
-        undoStack.push(cmd);
+    void ExecuteCommand(std::shared_ptr<Command> cmd) {
+        cmd->Execute();
+        UndoStack.push(cmd);
 
-        // Khi có thao tác mới -> clear redo
-        while (!redoStack.empty()) {
-            redoStack.pop();
+        // Khi có thao tác mới -> clear Redo
+        while (!RedoStack.empty()) {
+            RedoStack.pop();
         }
     }
 
-    void undo() {
-        if (undoStack.empty()) return;
+    void Undo() {
+        if (UndoStack.empty()) return;
 
-        auto cmd = undoStack.top();
-        undoStack.pop();
+        auto cmd = UndoStack.top();
+        UndoStack.pop();
 
-        cmd->undo();
-        redoStack.push(cmd);
+        cmd->Undo();
+        RedoStack.push(cmd);
     }
 
-    void redo() {
-        if (redoStack.empty()) return;
+    void Redo() {
+        if (RedoStack.empty()) return;
 
-        auto cmd = redoStack.top();
-        redoStack.pop();
+        auto cmd = RedoStack.top();
+        RedoStack.pop();
 
-        cmd->execute();
-        undoStack.push(cmd);
+        cmd->Execute();
+        UndoStack.push(cmd);
     }
 };
 
@@ -162,19 +162,19 @@ int main() {
     ImageViewport viewport;
     Editor editor;
 
-    auto zoomCmd = std::make_shared<ZoomCommand>(viewport, 1.5);
-    auto rotateCmd = std::make_shared<RotateCommand>(viewport, 90);
+    auto ZoomCmd = std::make_shared<ZoomCommand>(viewport, 1.5);
+    auto RotateCmd = std::make_shared<RotateCommand>(viewport, 90);
 
-    editor.executeCommand(zoomCmd);
-    editor.executeCommand(rotateCmd);
+    editor.ExecuteCommand(ZoomCmd);
+    editor.ExecuteCommand(RotateCmd);
 
     std::cout << "\nUndo:\n";
-    editor.undo();
-    editor.undo();
+    editor.Undo();
+    editor.Undo();
 
     std::cout << "\nRedo:\n";
-    editor.redo();
-    editor.redo();
+    editor.Redo();
+    editor.Redo();
 
     return 0;
 }

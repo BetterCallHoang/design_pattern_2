@@ -12,17 +12,17 @@
 class ImageViewport {
 private:
     double scale = 1.0;
-    double rotationAngle = 0.0;
+    double rotation_angle = 0.0;
 
 public:
-    void zoom(double factor) {
+    void Zoom(double factor) {
         scale *= factor;
         std::cout << "Zoom: scale = " << scale << "\n";
     }
 
-    void rotate(double angle) {
-        rotationAngle += angle;
-        std::cout << "Rotate: angle = " << rotationAngle << "\n";
+    void Rotate(double angle) {
+        rotation_angle += angle;
+        std::cout << "Rotate: angle = " << rotation_angle << "\n";
     }
 };
 
@@ -30,8 +30,8 @@ int main() {
     ImageViewport viewport;
 
     // UI gọi trực tiếp
-    viewport.zoom(1.2);
-    viewport.rotate(90);
+    viewport.Zoom(1.2);
+    viewport.Rotate(90);
 
     // ❌ Không thể undo
     return 0;

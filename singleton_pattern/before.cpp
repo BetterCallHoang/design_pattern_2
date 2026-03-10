@@ -5,7 +5,7 @@
 - Có nhiều instance khác nhau
 
 - Log không tập trung
---> Có thể tạo ra nhiều file log 
+--> Có thể tạo ra nhiều file Log 
 */
 #include <iostream>
 #include <string>
@@ -17,30 +17,30 @@ public:
         std::cout << "Logger được tạo\n";
     }
 
-    void log(const std::string& message) {
-        std::cout << "[LOG] " << message << std::endl;
+    void Log(const std::string& message) {
+        std::cout << "[Log] " << message << std::endl;
     }
 };
 
 // Module xử lý ảnh
 class ImageProcessor {
 private:
-    Logger logger;  // Mỗi module có logger riêng
+    Logger logger;  // Mỗi module có Logger riêng
 
 public:
-    void process() {
-        logger.log("Bắt đầu xử lý ảnh");
+    void Process() {
+        logger.Log("Bắt đầu xử lý ảnh");
     }
 };
 
 // Module hiệu chỉnh
 class CalibrationModule {
 private:
-    Logger logger;  // Lại tạo thêm một logger khác
+    Logger logger;  // Lại tạo thêm một Logger khác
 
 public:
-    void calibrate() {
-        logger.log("Bắt đầu hiệu chỉnh");
+    void Calibrate() {
+        logger.Log("Bắt đầu hiệu chỉnh");
     }
 };
 
@@ -48,8 +48,8 @@ int main() {
     ImageProcessor p;
     CalibrationModule c;
 
-    p.process();
-    c.calibrate();
+    p.Process();
+    c.Calibrate();
 
     return 0;
 }
